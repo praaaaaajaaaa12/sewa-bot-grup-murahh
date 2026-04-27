@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sewa Grup Premium | Bayar & Aktivasi QR</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b1120 0%, #111827 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* bintang animasi latar */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1300px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #E0E7FF, #A855F7, #3B82F6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .header .badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            margin-top: 1rem;
+            font-weight: 500;
+            color: #C4B5FD;
+            border: 1px solid rgba(139,92,246,0.4);
+        }
+
+        /* grid harga */
+        .pricing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        /* kartu */
+        .price-card {
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem 1.5rem 2rem;
+            width: 220px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.4);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .price-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(168,85,247,0.15), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .price-card:hover::before {
+            opacity: 1;
+        }
+        .price-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(168,85,247,0.5);
+            box-shadow: 0 30px 40px -12px rgba(0,0,0,0.5);
+        }
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #A855F7;
+            transition: transform 0.2s;
+        }
+        .price-card:hover .card-icon {
+            transform: scale(1.1) rotate(3deg);
+            color: #D8B4FE;
+        }
+        .duration {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #F3F4F6;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.6rem;
+        }
+        .price {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #FDE047, #F97316);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0.5rem 0;
+        }
+        .price small {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #9CA3AF;
+            background: none;
+            -webkit-background-clip: unset;
+            color: #9CA3AF;
+        }
+        .divider {
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #A855F7, #3B82F6);
+            margin: 1rem auto;
+            border-radius: 5px;
+        }
+        .btn-select {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(168,85,247,0.5);
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #E0E7FF;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .price-card:hover .btn-select {
+            background: #A855F7;
+            border-color: #A855F7;
+            color: white;
+            box-shadow: 0 4px 12px rgba(168,85,247,0.4);
+        }
+        .price-card:hover .btn-select i {
+            transform: translateX(4px);
+        }
+        /* kartu permanen */
+        .card-permanent {
+            background: linear-gradient(145deg, rgba(30, 20, 55, 0.9), rgba(20, 15, 45, 0.9));
+            border: 1px solid #F59E0B;
+            box-shadow: 0 0 12px rgba(245,158,11,0.2);
+        }
+        .card-permanent .price {
+            background: linear-gradient(120deg, #FFD966, #FFB347);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        .badge-hot {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #F97316;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 40px;
+            color: #000;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: scale(0.95);}
+            100% { opacity: 1; transform: scale(1);}
+        }
+
+        /* Modal QR Code */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInModal 0.3s ease;
+        }
+        .qr-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, #111827, #0F172A);
+            border-radius: 2rem;
+            max-width: 380px;
+            width: 90%;
+            padding: 1.8rem 1.5rem 2rem;
+            text-align: center;
+            border: 1px solid rgba(168,85,247,0.5);
+            box-shadow: 0 30px 40px rgba(0,0,0,0.5);
+            position: relative;
+            animation: zoomUp 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        @keyframes zoomUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content h3 {
+            font-size: 1.6rem;
+            color: #F3F4F6;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .modal-content .package-detail {
+            background: rgba(139,92,246,0.2);
+            padding: 0.5rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #C4B5FD;
+        }
+        .qr-image {
+            background: white;
+            padding: 16px;
+            border-radius: 28px;
+            margin: 1rem 0;
+            display: inline-block;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+        }
+        .qr-image img {
+            width: 220px;
+            height: 220px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            border-radius: 16px;
+        }
+        .btn-close-modal {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid #A855F7;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            color: white;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-close-modal:hover {
+            background: #A855F7;
+        }
+        .instruction-text {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            margin: 1rem 0 0;
+        }
+        .instruction-text i {
+            color: #F97316;
+        }
+
+        /* kontak */
+        .contact-section {
+            background: rgba(12, 18, 34, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            padding: 1.8rem 2rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0,0,0,0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            transition: all 0.2s;
+            flex: 1;
+            justify-content: center;
+        }
+        .contact-item i {
+            font-size: 1.8rem;
+            color: #A855F7;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9CA3AF;
+        }
+        .contact-value {
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+        }
+        .contact-value a {
+            color: white;
+            text-decoration: none;
+        }
+        .contact-value a:hover {
+            color: #C084FC;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #A78BFA;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .copy-btn:hover {
+            color: #E9D5FF;
+            transform: scale(1.1);
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1F2937;
+            backdrop-filter: blur(12px);
+            padding: 12px 24px;
+            border-radius: 60px;
+            color: #E2E8F0;
+            font-weight: 500;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            border-left: 4px solid #A855F7;
+        }
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #4B5563;
+            font-size: 0.7rem;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-35px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @media (max-width: 700px) {
+            .price-card { width: 170px; padding: 1.2rem 0.8rem; }
+            .duration { font-size: 1.3rem; }
+            .price { font-size: 1.8rem; }
+            .contact-section { flex-direction: column; }
+        }
+        @media (max-width: 480px) {
+            .price-card { width: 150px; }
+        }
+    </style>
+</head>
+<body>
+<div class="stars" id="starsContainer"></div>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-crown" style="font-size: 2rem; background: none; color:#A855F7;"></i> Sewa Grup Premium</h1>
+        <div class="badge">
+            <i class="fas fa-bolt"></i> Aktif 24/7 | Pilih paket → Scan QR → Konfirmasi
+        </div>
+    </div>
+
+    <div class="pricing-grid">
+        <!-- 2 minggu -->
+        <div class="price-card" data-duration="2 Minggu" data-price="5000" data-price-num="5000">
+            <div class="card-icon"><i class="fas fa-calendar-week"></i></div>
+            <div class="duration">2 Minggu</div>
+            <div class="price">Rp5.000 <small>/paket</small></div>
+            <div class="divider"></div>
+            <div class="btn-select">Pilih Paket <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <!-- 1 bulan -->
+        <div class="price-card" data-duration="1 Bulan" data-price="10000" data-price-num="10000">
+            <div class="card-icon"><i class="fas fa-moon"></i></div>
+            <div class="duration">1 Bulan</div>
+            <div class="price">Rp10.000 <small>/bulan</small></div>
+            <div class="divider"></div>
+            <div class="btn-select">Pilih Paket <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <!-- 1,2 Bulan -->
+        <div class="price-card" data-duration="1,2 Bulan" data-price="15000" data-price-num="15000">
+            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="duration">1,2 Bulan</div>
+            <div class="price">Rp15.000 <small>/spesial</small></div>
+            <div class="divider"></div>
+            <div class="btn-select">Pilih Paket <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <!-- permanen -->
+        <div class="price-card card-permanent" data-duration="Permanen" data-price="20000" data-price-num="20000">
+            <div class="badge-hot"><i class="fas fa-fire"></i> BEST VALUE</div>
+            <div class="card-icon"><i class="fas fa-infinity"></i></div>
+            <div class="duration">Permanen</div>
+            <div class="price">Rp20.000 <small>/seumur hidup</small></div>
+            <div class="divider"></div>
+            <div class="btn-select">Pilih Paket <i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
+
+    <div class="contact-section">
+        <div class="contact-item">
+            <i class="fab fa-whatsapp"></i>
+            <div class="contact-info">
+                <span class="contact-label">LINK GRUP (demo)</span>
+                <div class="contact-value">
+                    <a href="https://chat.whatsapp.com/J43Z8SmzEQt3hoDpI92TIS" target="_blank" id="grupLink">chat.whatsapp.com/J43Z8SmzEQt3hoDpI92TIS</a>
+                    <button class="copy-btn" data-copy="https://chat.whatsapp.com/J43Z8SmzEQt3hoDpI92TIS" title="Salin link grup"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-user-headset"></i>
+            <div class="contact-info">
+                <span class="contact-label">OWNER / ADMIN</span>
+                <div class="contact-value">
+                    <a href="https://wa.me/6285643623053" target="_blank">+62 856-4362-3053</a>
+                    <button class="copy-btn" data-copy="6285643623053" title="Salin nomor"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <i class="fas fa-shield-alt"></i> Transaksi aman: Scan QR pembayaran, lalu kirim bukti ke admin via WhatsApp
+    </footer>
+</div>
+
+<!-- Modal QR Code -->
+<div id="qrModal" class="qr-modal">
+    <div class="modal-content">
+        <i class="fas fa-qrcode" style="font-size: 2rem; color: #A855F7; margin-bottom: 8px;"></i>
+        <h3>Scan QR to Pay</h3>
+        <div id="modalPackageName" class="package-detail">Paket: -</div>
+        <div class="qr-image">
+            <img id="qrCodeImg" src="https://e.top4top.io/p_3769a1mza0.png" alt="QR Code Pembayaran">
+        </div>
+        <p style="color: #e2e8f0; font-size: 0.9rem; margin-top: 8px;">Nominal: <strong id="modalPrice">Rp0</strong></p>
+        <button class="btn-close-modal" id="closeModalBtn">Tutup & Hubungi Admin</button>
+        <div class="instruction-text">
+            <i class="fas fa-info-circle"></i> Setelah transfer, kirim bukti ke admin melalui WhatsApp untuk aktivasi grup.
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">✨ Tersalin ke clipboard!</div>
+
+<script>
+    // Bintang background
+    function createStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        const starCount = 180;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            star.style.opacity = Math.random() * 0.6 + 0.2;
+            starsContainer.appendChild(star);
+        }
+    }
+    createStars();
+
+    // Toast notifikasi
+    let toastTimeout;
+    function showToast(message) {
+        const toast = document.getElementById('toastMsg');
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toast.textContent = message || '✅ Tersalin!';
+        toast.classList.add('show');
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    // Copy ke clipboard
+    function copyToClipboard(text, successMsg) {
+        if (!navigator.clipboard) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast(successMsg);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(successMsg);
+        }).catch(() => {
+            showToast("Gagal menyalin.");
+        });
+    }
+
+    // Tombol copy
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const textToCopy = btn.getAttribute('data-copy');
+            if (textToCopy) {
+                if (textToCopy.includes('chat.whatsapp.com')) {
+                    copyToClipboard(textToCopy, "🔗 Link grup disalin!");
+                } else {
+                    copyToClipboard(textToCopy, "📞 Nomor owner disalin!");
+                }
+            }
+        });
+    });
+
+    // Ambil elemen modal
+    const modal = document.getElementById('qrModal');
+    const modalPackageName = document.getElementById('modalPackageName');
+    const modalPriceSpan = document.getElementById('modalPrice');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const qrImage = document.getElementById('qrCodeImg');
+
+    // QR sudah menggunakan link permanen dari permintaan: https://e.top4top.io/p_3769a1mza0.png
+    // Pastikan gambar QR selalu muncul dengan gambar yang sama (statis)
+    qrImage.src = "https://e.top4top.io/p_3769a1mza0.png";
+    qrImage.alt = "QR Code Pembayaran";
+
+    // Fungsi untuk membuka modal dengan data paket yang dipilih
+    function showQrModal(duration, priceAmount) {
+        // Format harga dengan Rupiah
+        const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(priceAmount);
+        modalPackageName.innerText = `Paket: ${duration}`;
+        modalPriceSpan.innerText = formattedPrice;
+        // Tampilkan modal
+        modal.classList.add('active');
+        // menyimpan data paket yang dipilih untuk keperluan setelah tutup / hubungi admin
+        modal.setAttribute('data-selected-duration', duration);
+        modal.setAttribute('data-selected-price', priceAmount);
+    }
+
+    // Menutup modal & langsung menawarkan chat admin dengan bukti transfer (opsional)
+    function closeModalAndChatAdmin() {
+        modal.classList.remove('active');
+        const duration = modal.getAttribute('data-selected-duration') || "Paket";
+        const price = parseInt(modal.getAttribute('data-selected-price'), 10) || 0;
+        if (duration && price) {
+            // Kirim pesan WhatsApp ke admin: memberitahu bahwa sudah transfer beserta bukti (panduan)
+            const ownerNumber = "6285643623053";
+            const message = `Halo Admin, saya sudah melakukan pembayaran untuk paket *${duration}* sebesar Rp${price.toLocaleString('id-ID')}. Berikut bukti transfer saya (saya lampirkan setelah chat). Mohon segera aktivasi grup premium. Terima kasih.`;
+            const encodedMsg = encodeURIComponent(message);
+            const waLink = `https://wa.me/${ownerNumber}?text=${encodedMsg}`;
+            window.open(waLink, '_blank');
+        } else {
+            // fallback
+            window.open('https://wa.me/6285643623053?text=Halo%20Admin%2C%20saya%20sudah%20transfer%20untuk%20sewa%20grup.%20Ini%20bukti%20transfernya.', '_blank');
+        }
+    }
+
+    // Tombol "Tutup & Hubungi Admin"
+    closeModalBtn.addEventListener('click', () => {
+        closeModalAndChatAdmin();
+    });
+
+    // Juga klik overlay (background) boleh menutup tanpa chat? Tidak, lebih baik user mengirim bukti, tapi kita tetapkan jika klik luar modal tidak apa2, namun kita gunakan prevent agar tidak membingungkan. Tapi sesuai permintaan "ntar kalo dah tf langsung chat admin sekalian bukti tf" modal berisi QR, setelah itu jika sudah transfer, user klik tutup & hubungi admin.
+    // Agar user tidak bingung, jika klik di luar modal, tidak menutup? Biar konsisten, hanya tombol yang bisa menutup.
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            // Klik area gelap: tidak langsung nutup, kasih tahu? Tapi biar user tidak salah, kita biarkan agar tidak mengganggu, lebih baik tetap harus klik tombol.
+            // TAPI sesuai pengalaman, biarkan hanya tombol yg menutup supaya tidak salah kirim pesan.
+            // jadi tidak melakukan apa-apa.
+        }
+    });
+
+    // Handler untuk semua kartu harga dan tombol pilih paket
+    const cards = document.querySelectorAll('.price-card');
+    cards.forEach(card => {
+        // event pada tombol select
+        const selectBtn = card.querySelector('.btn-select');
+        const getPackageData = () => {
+            const duration = card.getAttribute('data-duration');
+            let priceNum = parseInt(card.getAttribute('data-price'), 10);
+            if (isNaN(priceNum)) {
+                // fallback
+                const priceText = card.querySelector('.price')?.innerText.replace(/[^0-9]/g, '') || "0";
+                priceNum = parseInt(priceText, 10);
+            }
+            return { duration, priceNum };
+        };
+
+        const handleSelect = (e) => {
+            if (e) e.stopPropagation();
+            const { duration, priceNum } = getPackageData();
+            if (duration && !isNaN(priceNum)) {
+                // Tampilkan modal QR CODE
+                showQrModal(duration, priceNum);
+            } else {
+                showToast("Gagal memuat detail paket");
+            }
+        };
+
+        if (selectBtn) {
+            selectBtn.addEventListener('click', handleSelect);
+        }
+        // klik area kartu juga bisa (kecuali tombol)
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-select')) return;
+            const { duration, priceNum } = getPackageData();
+            if (duration && !isNaN(priceNum)) {
+                showQrModal(duration, priceNum);
+            }
+        });
+    });
+
+    // Tambahan: jika user ingin langsung chat admin setelah modal, tombol sudah sesuai.
+    // Menambahkan efek hove contact item
+    const contactItems = document.querySelectorAll('.contact-item');
+    contactItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.transform = 'translateY(-3px)';
+            item.style.backgroundColor = 'rgba(168,85,247,0.15)';
+        });
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'translateY(0px)';
+            item.style.backgroundColor = 'rgba(0,0,0,0.3)';
+        });
+    });
+
+    // Tampilkan default QR image konsisten, pastikan gambar bisa diakses
+    // Jika terjadi error load gambar QR, fallback notif
+    qrImage.onerror = () => {
+        console.warn("Gagal memuat QR code, tapi link tersedia");
+        qrImage.alt = "QR Code Tersedia via Link";
+        // tetap tampilkan teks
+    };
+
+    // Juga bisa tambahkan panduan bahwa QR sudah tetap
+    console.log("Ready: QR code muncul saat pilih paket, lalu hubungi admin setelah transfer.");
+</script>
+</body>
+  </html>
